@@ -1,11 +1,13 @@
 import { Box, Container, Heading, VStack, Text, Input, Button, HStack, Stack, Stat, StatLabel, StatNumber, StatHelpText } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Index = () => {
   const [workoutType, setWorkoutType] = useState("");
   const [duration, setDuration] = useState(0);
   const [calories, setCalories] = useState(0);
-  const [workoutSummary, setWorkoutSummary] = useState([]);
+  const [workoutSummary, setWorkoutSummary] = useState(
+    JSON.parse(localStorage.getItem("workoutSummary")) || []
+  );
   const [userProfile, setUserProfile] = useState({
     name: "John Doe",
     age: 30,
@@ -14,6 +16,10 @@ const Index = () => {
     workoutsCompleted: 0,
     totalCalories: 0,
   });
+
+  useEffect(() => {
+    localStorage.setItem("workoutSummary", JSON.stringify(workoutSummary));
+  }, [workoutSummary]);
 
   const handleAddWorkout = () => {
     const newWorkout = { type: workoutType, duration, calories };
